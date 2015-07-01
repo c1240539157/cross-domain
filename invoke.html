@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="http://repository-admin.3g.net.cn:80/js/front/messenger.js"></script>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        margin: 0 auto;
+        width: 1000px;
+    }
+
+    .nav ul {
+        width: 978px;
+        border: 0 solid #000;
+        margin: 0 auto;
+        list-style: none;
+        background-color: black;
+    }
+
+    .nav ul li {
+        float: left;
+    }
+
+    .nav ul li a {
+        display: block;
+        width: 200px;
+        height: 50px;
+        line-height: 50px;
+        background-color: white;
+        font-size: 18px;
+        text-align: center;
+        margin: 5px 10px;
+        text-decoration: none;
+        color: gray;
+    }
+
+    .nav ul li a:hover {
+        background-color: grey;
+        color: white;
+    }
+
+    .clearFix:after {
+        clear: both;
+        display: block;
+        visibility: hidden;
+        height: 0;
+        line-height: 0;
+        content: '';
+
+    }
+
+    .clearFix {
+        zoom: 1;
+    }
+
+    /*解决ie6/7兼容问题*/
+    .container {
+        margin: 0 auto;
+    }
+</style>
+<body>
+<div class="nav">
+    <ul>
+        <li><a href="#" onclick="invoke(this)">所有应用</a></li>
+        <li><a href="#" onclick="invoke(this)">谷歌市场</a></li>
+        <li><a href="#" onclick="invoke(this)">内部应用</a></li>
+    </ul>
+</div>
+<br class="clearFix">
+
+<div id="container" class="container">
+    <iframe id="iframe1" width="1000" height="700" frameborder="1" scrolling="false" style="display: none"></iframe>
+    <iframe id="iframe2" width="1000" height="700" frameborder="1" scrolling="false" style="display: none"></iframe>
+    <iframe id="iframe3" width="1000" height="700" frameborder="1" scrolling="false" style="display: none"></iframe>
+</div>
+
+
+<script>
+    var messenger = new Messenger('Parent', 'project');
+
+    messenger.listen(function (msg) {
+        alert(msg);
+    });
+
+    function sendMessage(name) {
+        messenger.targets[name].send("message from parent: ");
+    }
+    var invoke = function (Obj) {
+        var iframe1 = document.getElementById("iframe1");
+        var iframe2 = document.getElementById("iframe2");
+        var iframe3 = document.getElementById("iframe3");
+        iframe1.style.clear = 'both';
+        iframe2.style.clear = 'both';
+        iframe3.style.clear = 'both';
+        if (Obj.innerHTML == '所有应用') {
+            iframe1.src = 'http://repository-admin.3g.net.cn:80/front.html#';
+            iframe1.style.display = 'block';
+            iframe2.style.display = 'none';
+            iframe3.style.display = 'none';
+            messenger.addTarget(iframe1.contentWindow, 'iframe1');
+            sendMessage('iframe1');
+        } else if (Obj.innerHTML == '谷歌市场') {
+            iframe1.style.display = 'none';
+            iframe3.style.display = 'none';
+            iframe2.src = 'http://repository-admin.3g.net.cn:80/front.html#/?sourceId=7';
+            iframe2.style.display = 'block';
+            messenger.addTarget(iframe2.contentWindow, 'iframe2');
+            sendMessage('iframe2');
+        } else if (Obj.innerHTML = '内部应用') {
+            iframe1.style.display = 'none';
+            iframe2.style.display = 'none';
+            iframe3.style.display = 'block';
+            iframe3.src = 'http://repository-admin.3g.net.cn:80/front.html#/?sourceId=10';
+            messenger.addTarget(iframe3.contentWindow, 'iframe3');
+            sendMessage('iframe3');
+        }
+    };
+</script>
+</body>
+</html>
